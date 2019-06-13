@@ -8,4 +8,5 @@
 - http://www.rcsb.org/pdb/rest/ligandInfo?structureId=4HHB
 - http://rest.rcsb.org/apidocs/index.jsp#!/Chemical_components/getLigandById
 - Understanding pdb model files : https://pdb101.rcsb.org/learn/guide-to-understanding-pdb-data/beginner%E2%80%99s-guide-to-pdb-structures-and-the-pdbx-mmcif-format
-- Modelisation moleculaire (+ couleurs des atomes) : https://fr.wikipedia.org/wiki/Mod%C3%A9lisation_mol%C3%A9culaire
+- Modelisation moleculaire : https://fr.wikipedia.org/wiki/Mod%C3%A9lisation_mol%C3%A9culaire
+- Couleurs des molecules : https://en.wikipedia.org/wiki/CPK_coloring?oldid=753391981
