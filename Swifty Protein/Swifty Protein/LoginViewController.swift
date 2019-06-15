@@ -8,15 +8,29 @@
 
 import UIKit
 
-class LoginViewController: UIViewController {
+class LoginViewController: UIViewController  {
+    
+    @IBOutlet weak var _login: UITextField!
+    @IBOutlet weak var _password: UITextField!
+    @IBOutlet weak var loginButton: UIButton!
     
     override func viewDidLoad() {
         super.viewDidLoad()
     }
     
+    @IBAction func submit(_ sender: Any) {
+        if (_login.text?.isEmpty == false && _password.text?.isEmpty == false) {
+            print("logged !")
+            // Segue to ligand's list
+        }
+        else {
+            // Error : Need login and password
+        }
+    }
+    
+    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
-        // Release any cached data, images, etc that aren't in use.
     }
     
 }
