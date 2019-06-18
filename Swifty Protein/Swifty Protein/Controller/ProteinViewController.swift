@@ -9,8 +9,8 @@
 import UIKit
 import SceneKit
 
-class GameViewController: UIViewController {
-
+class ProteinViewController: UIViewController {
+    
     override func viewDidLoad() {
         super.viewDidLoad()
     }
@@ -22,10 +22,11 @@ class GameViewController: UIViewController {
     override var prefersStatusBarHidden: Bool {
         return true
     }
-
+    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Release any cached data, images, etc that aren't in use.
     }
-
+    
 }
+

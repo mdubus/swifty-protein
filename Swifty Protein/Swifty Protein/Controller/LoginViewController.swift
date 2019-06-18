@@ -20,14 +20,12 @@ class LoginViewController: UIViewController  {
     
     @IBAction func submit(_ sender: Any) {
         if (_login.text?.isEmpty == false && _password.text?.isEmpty == false) {
-            print("logged !")
-            // Segue to ligand's list
+            performSegue(withIdentifier: "toProteinsList", sender: self)
         }
         else {
-            // Error : Need login and password
+            alert(view: self, message: "Please provide a login and a password")
         }
     }
-    
     
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()

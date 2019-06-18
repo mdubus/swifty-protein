@@ -7,8 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		22762F1622B9625900826F1C /* alert.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22762F1522B9625900826F1C /* alert.swift */; };
+		22762F1822B9649500826F1C /* ProteinListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22762F1722B9649500826F1C /* ProteinListViewController.swift */; };
+		22762F1A22B964DB00826F1C /* ProteinViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22762F1922B964DB00826F1C /* ProteinViewController.swift */; };
 		D9AA8B3722B3CCE90059D4CC /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9AA8B3622B3CCE90059D4CC /* AppDelegate.swift */; };
-		D9AA8B3B22B3CCE90059D4CC /* GameViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9AA8B3A22B3CCE90059D4CC /* GameViewController.swift */; };
 		D9AA8B3E22B3CCE90059D4CC /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D9AA8B3C22B3CCE90059D4CC /* Main.storyboard */; };
 		D9AA8B4022B3CCE90059D4CC /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D9AA8B3F22B3CCE90059D4CC /* Assets.xcassets */; };
 		D9AA8B4322B3CCE90059D4CC /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D9AA8B4122B3CCE90059D4CC /* LaunchScreen.storyboard */; };
@@ -16,9 +18,11 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		22762F1522B9625900826F1C /* alert.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = alert.swift; sourceTree = "<group>"; };
+		22762F1722B9649500826F1C /* ProteinListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProteinListViewController.swift; sourceTree = "<group>"; };
+		22762F1922B964DB00826F1C /* ProteinViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProteinViewController.swift; sourceTree = "<group>"; };
 		D9AA8B3322B3CCE90059D4CC /* Swifty Protein.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Swifty Protein.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		D9AA8B3622B3CCE90059D4CC /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		D9AA8B3A22B3CCE90059D4CC /* GameViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameViewController.swift; sourceTree = "<group>"; };
 		D9AA8B3D22B3CCE90059D4CC /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		D9AA8B3F22B3CCE90059D4CC /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		D9AA8B4222B3CCE90059D4CC /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
@@ -37,6 +41,16 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		22762F1B22B9651B00826F1C /* Controller */ = {
+			isa = PBXGroup;
+			children = (
+				22762F1722B9649500826F1C /* ProteinListViewController.swift */,
+				22762F1922B964DB00826F1C /* ProteinViewController.swift */,
+				D9AA8B4A22B3CEE70059D4CC /* LoginViewController.swift */,
+			);
+			path = Controller;
+			sourceTree = "<group>";
+		};
 		D9AA8B2A22B3CCE90059D4CC = {
 			isa = PBXGroup;
 			children = (
@@ -56,13 +70,13 @@
 		D9AA8B3522B3CCE90059D4CC /* Swifty Protein */ = {
 			isa = PBXGroup;
 			children = (
+				22762F1B22B9651B00826F1C /* Controller */,
 				D9AA8B3622B3CCE90059D4CC /* AppDelegate.swift */,
-				D9AA8B3A22B3CCE90059D4CC /* GameViewController.swift */,
-				D9AA8B4A22B3CEE70059D4CC /* LoginViewController.swift */,
 				D9AA8B3C22B3CCE90059D4CC /* Main.storyboard */,
 				D9AA8B3F22B3CCE90059D4CC /* Assets.xcassets */,
 				D9AA8B4122B3CCE90059D4CC /* LaunchScreen.storyboard */,
 				D9AA8B4422B3CCE90059D4CC /* Info.plist */,
+				22762F1522B9625900826F1C /* alert.swift */,
 			);
 			path = "Swifty Protein";
 			sourceTree = "<group>";
@@ -140,8 +154,10 @@
 			buildActionMask = 2147483647;
 			files = (
 				D9AA8B4B22B3CEE70059D4CC /* LoginViewController.swift in Sources */,
-				D9AA8B3B22B3CCE90059D4CC /* GameViewController.swift in Sources */,
+				22762F1A22B964DB00826F1C /* ProteinViewController.swift in Sources */,
+				22762F1622B9625900826F1C /* alert.swift in Sources */,
 				D9AA8B3722B3CCE90059D4CC /* AppDelegate.swift in Sources */,
+				22762F1822B9649500826F1C /* ProteinListViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
