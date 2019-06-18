@@ -59,10 +59,10 @@
             </objects>
             <point key="canvasLocation" x="116" y="121"/>
         </scene>
-        <!--View Controller-->
+        <!--TouchID View Controller-->
         <scene sceneID="bbk-fn-gFR">
             <objects>
-                <viewController id="B76-hE-gMS" sceneMemberID="viewController">
+                <viewController id="B76-hE-gMS" customClass="TouchIDViewController" customModule="Swifty_Protein" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="N0L-uC-TQp">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -90,7 +90,7 @@
                                                     <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                 </state>
                                                 <connections>
-                                                    <segue destination="0vR-3M-uQz" kind="show" id="dGI-Xy-dPU"/>
+                                                    <action selector="loginWithTouchID:" destination="B76-hE-gMS" eventType="touchUpInside" id="dGH-Uv-6HU"/>
                                                 </connections>
                                             </button>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="2bl-Nd-zCI">
@@ -137,6 +137,9 @@
                         <viewLayoutGuide key="safeArea" id="p1P-BG-6PN"/>
                     </view>
                     <navigationItem key="navigationItem" id="DIr-Sa-jOx"/>
+                    <connections>
+                        <segue destination="0vR-3M-uQz" kind="show" identifier="TouchIDToProteinsList" id="9eD-lo-PC9"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="6qq-en-CK3" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
@@ -225,6 +228,6 @@
         <image name="touch_id" width="200" height="200"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="KT6-p3-JWX"/>
+        <segue reference="9eD-lo-PC9"/>
     </inferredMetricsTieBreakers>
 </document>
