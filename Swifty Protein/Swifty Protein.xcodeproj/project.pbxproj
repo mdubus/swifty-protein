@@ -11,6 +11,7 @@
 		22762F1822B9649500826F1C /* ProteinListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22762F1722B9649500826F1C /* ProteinListViewController.swift */; };
 		22762F1A22B964DB00826F1C /* ProteinViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22762F1922B964DB00826F1C /* ProteinViewController.swift */; };
 		22762F1D22B96C5500826F1C /* TouchIDViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22762F1C22B96C5500826F1C /* TouchIDViewController.swift */; };
+		9F9ADA1522BA288500F52A84 /* Molecule.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F9ADA1422BA288500F52A84 /* Molecule.swift */; };
 		D9AA8B3722B3CCE90059D4CC /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9AA8B3622B3CCE90059D4CC /* AppDelegate.swift */; };
 		D9AA8B3E22B3CCE90059D4CC /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D9AA8B3C22B3CCE90059D4CC /* Main.storyboard */; };
 		D9AA8B4022B3CCE90059D4CC /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D9AA8B3F22B3CCE90059D4CC /* Assets.xcassets */; };
@@ -23,6 +24,7 @@
 		22762F1722B9649500826F1C /* ProteinListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProteinListViewController.swift; sourceTree = "<group>"; };
 		22762F1922B964DB00826F1C /* ProteinViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProteinViewController.swift; sourceTree = "<group>"; };
 		22762F1C22B96C5500826F1C /* TouchIDViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TouchIDViewController.swift; sourceTree = "<group>"; };
+		9F9ADA1422BA288500F52A84 /* Molecule.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Molecule.swift; sourceTree = "<group>"; };
 		D9AA8B3322B3CCE90059D4CC /* Swifty Protein.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Swifty Protein.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		D9AA8B3622B3CCE90059D4CC /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		D9AA8B3D22B3CCE90059D4CC /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -54,6 +56,14 @@
 			path = Controller;
 			sourceTree = "<group>";
 		};
+		9F9ADA1322BA282D00F52A84 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				9F9ADA1422BA288500F52A84 /* Molecule.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
 		D9AA8B2A22B3CCE90059D4CC = {
 			isa = PBXGroup;
 			children = (
@@ -75,6 +85,7 @@
 			children = (
 				22762F1B22B9651B00826F1C /* Controller */,
 				D9AA8B3622B3CCE90059D4CC /* AppDelegate.swift */,
+				9F9ADA1322BA282D00F52A84 /* Models */,
 				D9AA8B3C22B3CCE90059D4CC /* Main.storyboard */,
 				D9AA8B3F22B3CCE90059D4CC /* Assets.xcassets */,
 				D9AA8B4122B3CCE90059D4CC /* LaunchScreen.storyboard */,
@@ -160,6 +171,7 @@
 				22762F1D22B96C5500826F1C /* TouchIDViewController.swift in Sources */,
 				22762F1A22B964DB00826F1C /* ProteinViewController.swift in Sources */,
 				22762F1622B9625900826F1C /* alert.swift in Sources */,
+				9F9ADA1522BA288500F52A84 /* Molecule.swift in Sources */,
 				D9AA8B3722B3CCE90059D4CC /* AppDelegate.swift in Sources */,
 				22762F1822B9649500826F1C /* ProteinListViewController.swift in Sources */,
 			);
