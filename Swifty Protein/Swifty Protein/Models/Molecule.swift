@@ -10,14 +10,12 @@ import Foundation
 
 class Atom: NSObject {
     let name: String!
-    let Id: String!
-    let links: [String]!
+    let Id: Int!
     //let coordinate: simd_float3!
     
-    init (name: String, Id: String, links: [String] /*,coordinate: simd_float3*/){
+    init (name: String, Id: Int /*,coordinate: simd_float3*/){
         self.name = name
         self.Id = Id
-        self.links = links
         //self.coordinate = coordinate
     }
 }
@@ -25,12 +23,13 @@ class Atom: NSObject {
 class Molecule: NSObject {
     let name: String!
     let ligandId: String!
-    let structure: [Atom]
+    var structure: [Atom]
+    var links: [(Int, Int)]!
     
-    init (name: String, ligandId: String, structure: [Atom]){
+    init (name: String, ligandId: String, structure: [Atom], links: [(Int, Int)] ){
         self.name = name
         self.ligandId = ligandId
         self.structure = structure
+        self.links = links
     }
 }
-

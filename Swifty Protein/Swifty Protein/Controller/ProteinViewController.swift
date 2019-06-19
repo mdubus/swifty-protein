@@ -93,19 +93,53 @@ class GameViewController: UIViewController {
         
     }
     
+    func createAtom(atomPdb: Array<Substring>) -> Atom{
+        let atom = Atom(
+                    name: String(atomPdb[11]),
+                    Id: Int(atomPdb[1])!)
+        return atom
+    }
+    
+    func createLink(newLink: Array<Substring>){
+        /*
+            newLink[1] est l atom de ref, les suivant sont ses connections.
+            si l'id des suivant est superieur a celui de ref alors ont inscrit une nouvelle connection.
+            sinon elle a logiquement deja été inscrite
+        */
+        
+        let firstId = Int(newLink[1])!
+        for secondId in 2..<newLink.count{
+            if (firstId < Int(secondId)){
+                molecule.links.append((firstId, Int(secondId)))
+            }
+        }
+    }
+    
     func CreateMolecule(moleculePdb: String){
         
-        var splitAtomString = moleculePdb.split(separator: " ")
+        //separation du fichier pdb par ligne
+        let moleculePdbLines = moleculePdb.split(separator: "\n")
+        var lineTmp: Array<Substring>!
         
-        for string in splitAtomString{
-            print(string)
+        for line in moleculePdbLines{
+            lineTmp = line.split(separator: " ")
+            
+            if (lineTmp[0] == "ATOM"){
+                molecule.structure.append(createAtom(atomPdb: lineTmp))
+            }
+            else if (lineTmp[0] == "CONECT"){
+                createLink(newLink: lineTmp)
+            }
+            else{
+                print("End of file\n")
+            }
         }
-        var geometry: SCNGeometry
-        
-        geometry = SCNSphere(radius: 0.6)
-        let geometryNode1 = SCNNode(geometry: geometry)
-        geometryNode1.position = SCNVector3(x:2, y:5, z:6)
-        scnScene.rootNode.addChildNode(geometryNode1)
+//        var geometry: SCNGeometry
+//
+//        geometry = SCNSphere(radius: 0.6)
+//        let geometryNode1 = SCNNode(geometry: geometry)
+//        geometryNode1.position = SCNVector3(x:2, y:5, z:6)
+//        scnScene.rootNode.addChildNode(geometryNode1)
         
     }
     
