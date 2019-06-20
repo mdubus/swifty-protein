@@ -2,7 +2,7 @@ import UIKit
 import SceneKit
 import Accelerate
 
-class GameViewController: UIViewController {
+class ProteinViewController: UIViewController {
     var scnView: SCNView!
     var scnScene: SCNScene!
     var cameraNode: SCNNode!
@@ -14,8 +14,8 @@ class GameViewController: UIViewController {
         setupView()
         setupScene()
         setupCamera()
-        //        spawnAtom()
-        CreateMolecule(moleculePdb: "ATOM      1  CHA HEM A   1       2.748 -19.531  39.896  1.00 10.00           C")
+                spawnAtom()
+//        CreateMolecule(moleculePdb: "ATOM      1  CHA HEM A   1       2.748 -19.531  39.896  1.00 10.00           C")
     }
     
     override var shouldAutorotate: Bool {
@@ -76,7 +76,7 @@ class GameViewController: UIViewController {
         if (abs(dot) < 0.999999)
         {
             let cross = simd_cross(yAxis, diff)
-            let quaternion = simd_quatf(vector: simd_float4(x: cross.x, y: cross.y, z: cross.z, w: -1 * simd_dot(yAxis, diff)))
+            let quaternion = simd_quatf(vector: simd_float4(x: cross.x, y: cross.y, z: cross.z, w: 1 + dot))
             geometryNode3.simdOrientation = simd_normalize(quaternion)
         }
         
