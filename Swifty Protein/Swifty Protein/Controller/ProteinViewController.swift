@@ -1,12 +1,12 @@
 import UIKit
 import SceneKit
 import Accelerate
+import CoreData
 
 class ProteinViewController: UIViewController {
     var scnView: SCNView!
     var scnScene: SCNScene!
     var cameraNode: SCNNode!
-    var molecule: Molecule!
     
     
     override func viewDidLoad() {
@@ -16,6 +16,8 @@ class ProteinViewController: UIViewController {
         setupCamera()
                 spawnAtom()
 //        CreateMolecule(moleculePdb: "ATOM      1  CHA HEM A   1       2.748 -19.531  39.896  1.00 10.00           C")
+        createMolecule()
+        fetchAll()
     }
     
     override var shouldAutorotate: Bool {
@@ -93,54 +95,83 @@ class ProteinViewController: UIViewController {
         
     }
     
-    func createAtom(atomPdb: Array<Substring>) -> Atom{
-        let atom = Atom(
-                    name: String(atomPdb[11]),
-                    Id: Int(atomPdb[1])!)
-        return atom
-    }
+//    func createAtom(atomPdb: Array<Substring>) -> Atom{
+//        let atom = Atom(
+//                    name: String(atomPdb[11]),
+//                    Id: Int(atomPdb[1])!)
+//        return atom
+//    }
     
-    func createLink(newLink: Array<Substring>){
-        /*
-            newLink[1] est l atom de ref, les suivant sont ses connections.
-            si l'id des suivant est superieur a celui de ref alors ont inscrit une nouvelle connection.
-            sinon elle a logiquement deja été inscrite
-        */
-        
-        let firstId = Int(newLink[1])!
-        for secondId in 2..<newLink.count{
-            if (firstId < Int(secondId)){
-                molecule.links.append((firstId, Int(secondId)))
-            }
-        }
-    }
-    
-    func CreateMolecule(moleculePdb: String){
-        
-        //separation du fichier pdb par ligne
-        let moleculePdbLines = moleculePdb.split(separator: "\n")
-        var lineTmp: Array<Substring>!
-        
-        for line in moleculePdbLines{
-            lineTmp = line.split(separator: " ")
-            
-            if (lineTmp[0] == "ATOM"){
-                molecule.structure.append(createAtom(atomPdb: lineTmp))
-            }
-            else if (lineTmp[0] == "CONECT"){
-                createLink(newLink: lineTmp)
-            }
-            else{
-                print("End of file\n")
-            }
-        }
-//        var geometry: SCNGeometry
+//    func createLink(newLink: Array<Substring>){
+//        /*
+//            newLink[1] est l atom de ref, les suivant sont ses connections.
+//            si l'id des suivant est superieur a celui de ref alors ont inscrit une nouvelle connection.
+//            sinon elle a logiquement deja été inscrite
+//        */
 //
-//        geometry = SCNSphere(radius: 0.6)
-//        let geometryNode1 = SCNNode(geometry: geometry)
-//        geometryNode1.position = SCNVector3(x:2, y:5, z:6)
-//        scnScene.rootNode.addChildNode(geometryNode1)
+//        let firstId = Int(newLink[1])!
+//        for secondId in 2..<newLink.count{
+//            if (firstId < Int(secondId)){
+//                molecule.links.append((firstId, Int(secondId)))
+//            }
+//        }
+//    }
+//
+//    func CreateMolecule(moleculePdb: String){
+//
+//        //separation du fichier pdb par ligne
+//        let moleculePdbLines = moleculePdb.split(separator: "\n")
+//        var lineTmp: Array<Substring>!
+//
+//        for line in moleculePdbLines{
+//            lineTmp = line.split(separator: " ")
+//
+//            if (lineTmp[0] == "ATOM"){
+//                molecule.structure.append(createAtom(atomPdb: lineTmp))
+//            }
+//            else if (lineTmp[0] == "CONECT"){
+//                createLink(newLink: lineTmp)
+//            }
+//            else{
+//                print("End of file\n")
+//            }
+//        }
+////        var geometry: SCNGeometry
+////
+////        geometry = SCNSphere(radius: 0.6)
+////        let geometryNode1 = SCNNode(geometry: geometry)
+////        geometryNode1.position = SCNVector3(x:2, y:5, z:6)
+////        scnScene.rootNode.addChildNode(geometryNode1)
+//
+//    }
+  
+    func createMolecule(){
+        let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
         
+        let molecule = Molecules(context: context)
+        
+        molecule.name = "proteineDeOuf"
+        molecule.ligand_Id = "jlkjlkj"
+        
+        do{
+            try context.save()
+            print("bien sauvegardé")
+        }catch let error{
+            print(error)
+        }
+    }
+    
+    func fetchAll(){
+        let request: NSFetchRequest<Molecules> = Molecules.fetchRequest()
+        let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
+        
+        guard let molecules = try? context.fetch(request) else {
+            return
+        }
+        
+        for molecule in molecules{
+            print(molecule.name)
+        }
     }
     
 }
