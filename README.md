@@ -13,3 +13,22 @@
 
 ## Tutoriels :
 - https://www.raywenderlich.com/2243-scene-kit-tutorial-getting-started
+
+
+## Modelisation de la BDD : 
+
+**Molécule :**
+- LigandID (HEM)
+- Nom (ex: H2O, eau)
+
+**Atomes :**
+- AtomeID (ex : C2C, B3C, ...)
+- Nom (C, H, N, ...)
+- LigandID (ref)
+- Coordonnées (x, y, z)
+- Couleur ?
+
+**Liens :**
+- LigandID (ref)
+- Atome1ID (ref)
+- Atome2ID (ref)
