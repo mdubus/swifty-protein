@@ -7,6 +7,7 @@ class ProteinViewController: UIViewController {
     var scnView: SCNView!
     var scnScene: SCNScene!
     var cameraNode: SCNNode!
+    let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
     
     
     override func viewDidLoad() {
@@ -14,10 +15,13 @@ class ProteinViewController: UIViewController {
         setupView()
         setupScene()
         setupCamera()
-                spawnAtom()
+        spawnAtom()
 //        CreateMolecule(moleculePdb: "ATOM      1  CHA HEM A   1       2.748 -19.531  39.896  1.00 10.00           C")
-        createMolecule()
+        createAtom(atomPdb: "ATOM      1  CHA HEM A   1       2.748 -19.531  39.896  1.00 10.00           C")
+        createAtom(atomPdb: "ATOM      2  CHB HEM A   1       3.258 -17.744  35.477  1.00 10.00           C")
         fetchAll()
+        deleteAllData("Atoms")
+        deleteAllData("Molecules")
     }
     
     override var shouldAutorotate: Bool {
@@ -95,12 +99,25 @@ class ProteinViewController: UIViewController {
         
     }
     
-//    func createAtom(atomPdb: Array<Substring>) -> Atom{
-//        let atom = Atom(
-//                    name: String(atomPdb[11]),
-//                    Id: Int(atomPdb[1])!)
-//        return atom
-//    }
+    func createAtom(atomPdb: String) -> Atoms{
+        let atom = Atoms(context: context)
+        let splitAtomLine = atomPdb.split(separator: " ")
+        
+        atom.name = String(splitAtomLine[11])
+        atom.atom_Id = String(splitAtomLine[2])
+        atom.coor_X = Float(splitAtomLine[6])!
+        atom.coor_Y = Float(splitAtomLine[7])!
+        atom.coor_Z = Float(splitAtomLine[8])!
+        
+        do{
+            try context.save()
+            print("Atoms bien sauvegardé")
+        }catch let error{
+            print(error)
+        }
+        
+        return atom
+    }
     
 //    func createLink(newLink: Array<Substring>){
 //        /*
@@ -145,9 +162,8 @@ class ProteinViewController: UIViewController {
 //
 //    }
   
+    
     func createMolecule(){
-        let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
-        
         let molecule = Molecules(context: context)
         
         molecule.name = "proteineDeOuf"
@@ -174,6 +190,21 @@ class ProteinViewController: UIViewController {
         }
     }
     
+    func deleteAllData(_ entity:String) {
+        let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: entity)
+        let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
+        
+        fetchRequest.returnsObjectsAsFaults = false
+        do {
+            let results = try context.fetch(fetchRequest)
+            for object in results {
+                guard let objectData = object as? NSManagedObject else {continue}
+                context.delete(objectData)
+            }
+        } catch let error {
+            print("Detele all data in \(entity) error :", error)
+        }
+    }
 }
 
 
