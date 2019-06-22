@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		220C62B022BE72EF002F2FBC /* ligands.txt in Resources */ = {isa = PBXBuildFile; fileRef = 220C62AF22BE72EF002F2FBC /* ligands.txt */; };
+		220C62B222BE7D17002F2FBC /* ProteinTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 220C62B122BE7D17002F2FBC /* ProteinTableViewCell.swift */; };
 		22762F1622B9625900826F1C /* alert.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22762F1522B9625900826F1C /* alert.swift */; };
 		22762F1822B9649500826F1C /* ProteinListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22762F1722B9649500826F1C /* ProteinListViewController.swift */; };
 		22762F1A22B964DB00826F1C /* ProteinViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22762F1922B964DB00826F1C /* ProteinViewController.swift */; };
@@ -21,6 +23,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		220C62AF22BE72EF002F2FBC /* ligands.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = ligands.txt; sourceTree = "<group>"; };
+		220C62B122BE7D17002F2FBC /* ProteinTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProteinTableViewCell.swift; sourceTree = "<group>"; };
 		22762F1522B9625900826F1C /* alert.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = alert.swift; sourceTree = "<group>"; };
 		22762F1722B9649500826F1C /* ProteinListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProteinListViewController.swift; sourceTree = "<group>"; };
 		22762F1922B964DB00826F1C /* ProteinViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProteinViewController.swift; sourceTree = "<group>"; };
@@ -54,6 +58,7 @@
 				22762F1922B964DB00826F1C /* ProteinViewController.swift */,
 				D9AA8B4A22B3CEE70059D4CC /* LoginViewController.swift */,
 				22762F1C22B96C5500826F1C /* TouchIDViewController.swift */,
+				220C62B122BE7D17002F2FBC /* ProteinTableViewCell.swift */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -94,6 +99,7 @@
 				D9AA8B4422B3CCE90059D4CC /* Info.plist */,
 				22762F1522B9625900826F1C /* alert.swift */,
 				9F440DA622BBACD40054A917 /* Ligands.xcdatamodeld */,
+				220C62AF22BE72EF002F2FBC /* ligands.txt */,
 			);
 			path = "Swifty Protein";
 			sourceTree = "<group>";
@@ -160,6 +166,7 @@
 				D9AA8B4322B3CCE90059D4CC /* LaunchScreen.storyboard in Resources */,
 				D9AA8B4022B3CCE90059D4CC /* Assets.xcassets in Resources */,
 				D9AA8B3E22B3CCE90059D4CC /* Main.storyboard in Resources */,
+				220C62B022BE72EF002F2FBC /* ligands.txt in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -173,6 +180,7 @@
 				D9AA8B4B22B3CEE70059D4CC /* LoginViewController.swift in Sources */,
 				22762F1D22B96C5500826F1C /* TouchIDViewController.swift in Sources */,
 				22762F1A22B964DB00826F1C /* ProteinViewController.swift in Sources */,
+				220C62B222BE7D17002F2FBC /* ProteinTableViewCell.swift in Sources */,
 				22762F1622B9625900826F1C /* alert.swift in Sources */,
 				9F9ADA1522BA288500F52A84 /* Molecule.swift in Sources */,
 				D9AA8B3722B3CCE90059D4CC /* AppDelegate.swift in Sources */,
