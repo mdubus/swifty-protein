@@ -85,7 +85,11 @@ extension ProteinListViewController: UITableViewDelegate, UITableViewDataSource 
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if (segue.identifier == "tapedCellSegue") {
             let viewController = segue.destination as! ProteinViewController
-            viewController.moleculeName = selectedMolecule
+            guard let molecule:Molecules = createMolecule(ligand: selectedMolecule, view: self) else {
+                alert(view: self, message: "unable to create molecule in core data") ;
+                return
+            }
+            viewController.molecule = molecule
         }
     }
 }
