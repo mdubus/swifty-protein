@@ -38,15 +38,16 @@ func deleteAllEntities(_ entity:String) {
     }
 }
 
-//func fetchAll() {
-//    let request: NSFetchRequest<NSFetchRequestResult> = Molecules.fetchRequest()
-//    let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
-//    
-//    guard let molecules = try? context.fetch(request) else {
-//        print("Error fetching molecules")
-//        return
-//    }
-//    for molecule in molecules {
-//        ligands.append(molecule.ligand_Id!)
-//    }
+func fetchAllMolecules() -> [Molecules] {
+    let request: NSFetchRequest<Molecules> = Molecules.fetchRequest()
+    do {
+        let molecules = try context.fetch(request)
+        return molecules
+    }
+    catch let error {
+        print("Error fetching molecules : ", error)
+        return []
+    }
+    
 }
+

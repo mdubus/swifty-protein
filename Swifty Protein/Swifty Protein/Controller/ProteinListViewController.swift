@@ -24,26 +24,16 @@ class ProteinListViewController:UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-//        deleteAllEntities("Molecules")
+        
         let count = getCount("Molecules")
         print(count)
         if (count == 0) {
             loadProteinsIntoCoreData()
         } else {
-            fetchAll()
-        }
-    }
-    
-    func fetchAll(){
-        let request: NSFetchRequest<Molecules> = Molecules.fetchRequest()
-        let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
-        
-        guard let molecules = try? context.fetch(request) else {
-            print("Error fetching molecules")
-            return
-        }
-        for molecule in molecules {
-            ligands.append(molecule.ligand_Id!)
+            let molecules = fetchAllMolecules()
+            for molecule in molecules {
+                ligands.append(molecule.ligand_Id!)
+            }
         }
     }
     
