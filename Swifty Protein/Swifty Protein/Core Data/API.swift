@@ -51,3 +51,77 @@ func fetchAllMolecules() -> [Molecules] {
     
 }
 
+func createMolecule(ligand: String, view: UIViewController) -> Molecules? {
+    let molecule = Molecules(context: context)
+    molecule.ligand_Id = ligand
+    
+    guard let moleculePdb = parseHtml(ligand: ligand) else { alert(view: view, message: "Impossible de recupérer la molécule"); return nil}
+    let pdbLines = moleculePdb.components(separatedBy: "\n").filter({$0 != ""})
+    
+    for line in pdbLines{
+        let lineTmp = line.components(separatedBy: " ").filter({$0 != ""})
+        
+        if (lineTmp[0] == "ATOM"){
+            createAtom(splitAtomLine: lineTmp, molecule: molecule)
+        }
+        else if (lineTmp[0] == "CONECT"){
+            createLink(newLink: lineTmp, molecule: molecule)
+        }
+        else{
+            print("End of file\n")
+        }
+    }
+    do {
+        try context.save()
+        print("bien sauvegardé")
+        return molecule
+    } catch let error{
+        print(error)
+    }
+    return nil
+}
+
+
+func parseHtml(ligand: String) -> String? {
+    let url = URL(string: "https://files.rcsb.org/ligands/view/" + ligand + "_ideal.pdb")
+    do{
+        let richText = try String(contentsOf: url!)
+        //            print(richText)
+        return richText
+    }catch let error{
+        print(error)
+    }
+    return nil
+}
+
+func createAtom(splitAtomLine: [String], molecule : Molecules){
+    let atom = Atoms(context: context)
+    
+    atom.type = splitAtomLine[11]
+    atom.atom_Id = Int16(splitAtomLine[1])!
+    atom.name = splitAtomLine[2]
+    atom.coor_X = Float(splitAtomLine[6])!
+    atom.coor_Y = Float(splitAtomLine[7])!
+    atom.coor_Z = Float(splitAtomLine[8])!
+    
+    molecule.addToAtom(atom)
+}
+
+func createLink(newLink: [String], molecule : Molecules){
+    /*
+     newLink[1] est l atom de ref, les suivant sont ses connections.
+     si l'id des suivant est superieur a celui de ref alors ont inscrit une nouvelle connection.
+     sinon elle a logiquement deja été inscrite
+     */
+    
+    let firstId = Int16(newLink[1])!
+    for index in 2..<newLink.count{
+        let link = Links(context: context)
+        if (firstId < Int16(newLink[index])!){
+            link.atome1_ID = firstId
+            link.atome2_ID = Int16(newLink[index])!
+            molecule.addToLinks(link)
+        }
+    }
+}
+

@@ -8,7 +8,7 @@ class ProteinViewController: UIViewController {
     var scnScene: SCNScene!
     var cameraNode: SCNNode!
     let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
-    var moleculeName: String  = ""
+    var molecule: Molecules = Molecules()
     
     
     override func viewDidLoad() {
@@ -18,8 +18,8 @@ class ProteinViewController: UIViewController {
         
         setupScene()
         setupCamera()
-        createMolecule(ligand: moleculeName)
-        parseMolecule(molecule: Molecules)
+//        createMolecule(ligand: moleculeName)
+        parseMolecule()
         
 //        spawnAtom()
     }
@@ -51,14 +51,14 @@ class ProteinViewController: UIViewController {
         scnScene.rootNode.addChildNode(cameraNode)
     }
     
-    func parseMolecule(molecule: Molecules){
+    func parseMolecule(){
         
         for atom in (molecule.atom?.allObjects) as! [Atoms]{
             drawOneSphere(atom: atom)
         }
         
-        for link in (molecule.atom?.allObjects) as! [Links]{
-            drawOneLink(link: link, molecule: molecule)
+        for link in (molecule.links?.allObjects) as! [Links]{
+            drawOneLink(link: link)
         }
     }
     
@@ -69,9 +69,10 @@ class ProteinViewController: UIViewController {
                 return atom
             }
         }
+        return atoms[1]
     }
     
-    func drawOneLink(link: Links, molecule: Molecules){
+    func drawOneLink(link: Links){
         let atom1 = searchAtom(id: link.atome1_ID, atoms: (molecule.atom?.allObjects) as! [Atoms])
         let atom2 = searchAtom(id: link.atome2_ID, atoms: (molecule.atom?.allObjects) as! [Atoms])
         
