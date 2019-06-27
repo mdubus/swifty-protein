@@ -13,6 +13,8 @@ import LocalAuthentication
 class TouchIDViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
+        deleteAllEntities("Molecules")
+        deleteAllEntities("Atoms")
     }
     
     @IBAction func loginWithTouchID(_ sender: Any) {

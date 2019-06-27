@@ -25,6 +25,7 @@ class ProteinListViewController:UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        
         let count = getCount("Molecules")
         print(count)
         if (count == 0) {

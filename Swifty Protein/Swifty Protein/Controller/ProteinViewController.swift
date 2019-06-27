@@ -8,24 +8,19 @@ class ProteinViewController: UIViewController {
     var scnScene: SCNScene!
     var cameraNode: SCNNode!
     let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
-//    var molecule: Molecules!
+    //    var molecule: Molecules!
     
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        
         setupView()
+        
         setupScene()
         setupCamera()
-        spawnAtom()
+        createMolecule(ligand: "001")
         
-        
-        let pdbFile = "ATOM      1  CHA HEM A   1       2.748 -19.531  39.896  1.00 10.00           C\nATOM      2  CHB HEM A   1       3.258 -17.744  35.477  1.00 10.00           C"
-        
-        deleteAllEntities("Atoms")
-        deleteAllEntities("Molecules")
-        createMolecule(moleculePdb: pdbFile)
-        fetchAll()
+//        spawnAtom()
     }
     
     override var shouldAutorotate: Bool {
@@ -51,7 +46,7 @@ class ProteinViewController: UIViewController {
     func setupCamera() {
         cameraNode = SCNNode()
         cameraNode.camera = SCNCamera()
-        cameraNode.position = SCNVector3(x: 0, y: 0, z: 60)
+        cameraNode.position = SCNVector3(x: 0, y: 0, z: 50)
         scnScene.rootNode.addChildNode(cameraNode)
     }
     
@@ -89,35 +84,66 @@ class ProteinViewController: UIViewController {
         scnScene.rootNode.addChildNode(geometryNode3)
     }
     
-    func createAtom(atomPdb: String, molecule : Molecules){
+    func createAtom(splitAtomLine: [String], molecule : Molecules){
         let atom = Atoms(context: context)
-        let splitAtomLine = atomPdb.split(separator: " ", omittingEmptySubsequences: true)
-
-        atom.name = String(splitAtomLine[11])
-        atom.atom_Id = String(splitAtomLine[2])
-        atom.coor_X = Float(String(splitAtomLine[6]))!
-        atom.coor_Y = Float(String(splitAtomLine[7]))!
-        atom.coor_Z = Float(String(splitAtomLine[8]))!
         
+        atom.type = splitAtomLine[11]
+        atom.atom_Id = Int16(splitAtomLine[1])!
+        atom.name = splitAtomLine[2]
+        atom.coor_X = Float(splitAtomLine[6])!
+        atom.coor_Y = Float(splitAtomLine[7])!
+        atom.coor_Z = Float(splitAtomLine[8])!
+        
+//        print(atom)
         molecule.addToAtom(atom)
+        AddOneSphere(atom: atom)
     }
     
-    func createMolecule(moleculePdb: String){
-        let molecule = Molecules(context: context)
-        molecule.name = "proteineDeOuf"
-        molecule.ligand_Id = "jlkjlkj"
+    func createLink(newLink: [String], molecule : Molecules){
+        /*
+         newLink[1] est l atom de ref, les suivant sont ses connections.
+         si l'id des suivant est superieur a celui de ref alors ont inscrit une nouvelle connection.
+         sinon elle a logiquement deja été inscrite
+         */
+
+        let firstId = Int16(newLink[1])!
+        for index in 2..<newLink.count{
+            let link = Links(context: context)
+            if (firstId < Int16(newLink[index])!){
+                link.atome1_ID = firstId
+                link.atome2_ID = Int16(newLink[index])!
+                molecule.addToLinks(link)
+            }
+        }
+    }
+    
+    func AddOneSphere(atom: Atoms){
         
-        let pdbLines = moleculePdb.split(separator: "\n", omittingEmptySubsequences: true)
-        var lineTmp: Array<Substring>!
+        var geometry: SCNGeometry
+        
+        geometry = SCNSphere(radius: 0.4)
+        let geometryNode1 = SCNNode(geometry: geometry)
+        geometryNode1.position = SCNVector3(x: atom.coor_X, y: atom.coor_Y, z: atom.coor_Z)
+        scnScene.rootNode.addChildNode(geometryNode1)
+    }
+    
+    func createMolecule(ligand: String){
+        let molecule = Molecules(context: context)
+        molecule.name = "Ma molecule"
+        molecule.ligand_Id = ligand
+        
+        guard let moleculePdb = parseHtml(ligand: ligand) else {alert(view: self, message: "Impossible de recuperer la molecule"); return}
+        let pdbLines = moleculePdb.components(separatedBy: "\n").filter({$0 != ""})
         
         for line in pdbLines{
-            lineTmp = line.split(separator: " ",omittingEmptySubsequences: true)
-
+            let lineTmp = line.components(separatedBy: " ").filter({$0 != ""})
+            
             if (lineTmp[0] == "ATOM"){
-                createAtom(atomPdb: String(describing: line), molecule: molecule)
+                createAtom(splitAtomLine: lineTmp, molecule: molecule)
             }
-//            else if (lineTmp[0] == "CONECT"){
-//            }
+            else if (lineTmp[0] == "CONECT"){
+                createLink(newLink: lineTmp, molecule: molecule)
+            }
             else{
                 print("End of file\n")
             }
@@ -129,24 +155,19 @@ class ProteinViewController: UIViewController {
         } catch let error{
             print(error)
         }
+//        print(molecule.links?.allObjects)
     }
     
-    func fetchAll(){
-        let request: NSFetchRequest<Molecules> = Molecules.fetchRequest()
-        let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
-
-        guard let molecules = try? context.fetch(request) else {
-            print("Error fetching molecules")
-            return
+    func parseHtml(ligand: String) -> String?{
+        let url = URL(string: "https://files.rcsb.org/ligands/view/" + ligand + "_ideal.pdb")
+        do{
+            let richText = try String(contentsOf: url!)
+            //            print(richText)
+            return richText
+        }catch let error{
+            print(error)
         }
-        
-        for molecule in molecules {
-            print(molecule.name)
-        
-            for atom in molecule.atom as! Set<Atoms> {
-                print(atom.atom_Id)
-            }
-        }
+        return nil
     }
 }
 
