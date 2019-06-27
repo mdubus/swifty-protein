@@ -22,8 +22,8 @@ class ProteinViewController: UIViewController {
         
         let pdbFile = "ATOM      1  CHA HEM A   1       2.748 -19.531  39.896  1.00 10.00           C\nATOM      2  CHB HEM A   1       3.258 -17.744  35.477  1.00 10.00           C"
         
-        deleteAllData("Atoms")
-        deleteAllData("Molecules")
+        deleteAllEntities("Atoms")
+        deleteAllEntities("Molecules")
         createMolecule(moleculePdb: pdbFile)
         fetchAll()
     }
@@ -146,22 +146,6 @@ class ProteinViewController: UIViewController {
             for atom in molecule.atom as! Set<Atoms> {
                 print(atom.atom_Id)
             }
-        }
-    }
-    
-    func deleteAllData(_ entity:String) {
-        let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: entity)
-        let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
-        
-        fetchRequest.returnsObjectsAsFaults = false
-        do {
-            let results = try context.fetch(fetchRequest)
-            for object in results {
-                guard let objectData = object as? NSManagedObject else {continue}
-                context.delete(objectData)
-            }
-        } catch let error {
-            print("Detele all data in \(entity) error :", error)
         }
     }
 }

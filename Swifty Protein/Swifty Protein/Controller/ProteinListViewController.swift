@@ -8,13 +8,12 @@
 
 import Foundation
 import UIKit
-
+import CoreData
 
 // TODO : Check if ligands are already in database
 // If not, push them
 
 class ProteinListViewController:UIViewController {
-    
     
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var searchBar: UISearchBar!
@@ -22,22 +21,59 @@ class ProteinListViewController:UIViewController {
     var ligands = [String]()
     var searchedLigands = [String]()
     
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-        loadLigandsFile()
+//        deleteAllEntities("Molecules")
+        let count = getCount("Molecules")
+        print(count)
+        if (count == 0) {
+            loadProteinsIntoCoreData()
+        } else {
+            fetchAll()
+        }
     }
     
-    func loadLigandsFile(){
+    func fetchAll(){
+        let request: NSFetchRequest<Molecules> = Molecules.fetchRequest()
+        let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
+        
+        guard let molecules = try? context.fetch(request) else {
+            print("Error fetching molecules")
+            return
+        }
+        for molecule in molecules {
+            ligands.append(molecule.ligand_Id!)
+        }
+    }
+    
+    func loadProteinsIntoCoreData() {
+        let data = loadLigandsFile()
+        for d in data {
+            let molecule = Molecules(context: context)
+            molecule.ligand_Id = d
+            do {
+                try context.save()
+            } catch let error{
+                print(error)
+            }
+        }
+    }
+    
+    func loadLigandsFile() -> [String]{
         if let filepath = Bundle.main.path(forResource: "ligands", ofType: "txt") {
             do {
                 let contents = try String(contentsOfFile: filepath)
-                ligands = contents.components(separatedBy: "\n").filter({ $0 != ""})
+                let data = contents.components(separatedBy: "\n").filter({ $0 != ""})
+                ligands = data
+                return data
             } catch {
                 print("Error : 'ligands.txt' couldn't be loaded")
             }
         } else {
             print("Error : 'ligands.txt.' wasn't found")
         }
+        return []
     }
 }
 
