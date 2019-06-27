@@ -10,9 +10,6 @@ import Foundation
 import UIKit
 import CoreData
 
-// TODO : Check if ligands are already in database
-// If not, push them
-
 class ProteinListViewController:UIViewController {
     
     @IBOutlet weak var tableView: UITableView!
@@ -20,12 +17,12 @@ class ProteinListViewController:UIViewController {
     
     var ligands = [String]()
     var searchedLigands = [String]()
+    var selectedMolecule: String = ""
     
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        
+//        deleteAllEntities("Molecules")
         let count = getCount("Molecules")
         print(count)
         if (count == 0) {
@@ -71,25 +68,25 @@ class ProteinListViewController:UIViewController {
 extension ProteinListViewController: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        if (searchedLigands.count > 0) {
-            return searchedLigands.count
-        }
-        else {
-            return ligands.count
-        }
+        return searchedLigands.count > 0 ? searchedLigands.count : ligands.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "cell") as! ProteinTableViewCell
-
-        if (searchedLigands.count > 0)
-        {
-            cell.ligand = searchedLigands[indexPath.row]
-        }
-        else {
-            cell.ligand = ligands[indexPath.row]
-        }
+        cell.ligand = searchedLigands.count > 0 ? searchedLigands[indexPath.row] : ligands[indexPath.row]
         return cell
+    }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        selectedMolecule = searchedLigands.count > 0 ? searchedLigands[indexPath.row] : ligands[indexPath.row]
+        self.performSegue(withIdentifier: "tapedCellSegue", sender: self)
+    }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if (segue.identifier == "tapedCellSegue") {
+            let viewController = segue.destination as! ProteinViewController
+            viewController.moleculeName = selectedMolecule
+        }
     }
 }
 

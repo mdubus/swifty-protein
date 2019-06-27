@@ -8,7 +8,7 @@ class ProteinViewController: UIViewController {
     var scnScene: SCNScene!
     var cameraNode: SCNNode!
     let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
-    //    var molecule: Molecules!
+    var moleculeName: String  = ""
     
     
     override func viewDidLoad() {
@@ -18,7 +18,7 @@ class ProteinViewController: UIViewController {
         
         setupScene()
         setupCamera()
-        createMolecule(ligand: "001")
+        createMolecule(ligand: moleculeName)
         
 //        spawnAtom()
     }

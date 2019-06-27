@@ -50,7 +50,6 @@
                                         </tableViewCellContentView>
                                         <connections>
                                             <outlet property="name" destination="8Tj-Qt-Are" id="dBG-hq-WZH"/>
-                                            <segue destination="BV1-FR-VrT" kind="show" id="Nab-t0-Z5X"/>
                                         </connections>
                                     </tableViewCell>
                                 </prototypes>
@@ -75,6 +74,7 @@
                     <connections>
                         <outlet property="searchBar" destination="U0r-qo-3qc" id="ngU-qb-BTl"/>
                         <outlet property="tableView" destination="ctb-6e-bzT" id="X3a-JG-jM7"/>
+                        <segue destination="BV1-FR-VrT" kind="show" identifier="tapedCellSegue" id="vET-5P-gFa"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="0fN-a1-4kK" userLabel="First Responder" sceneMemberID="firstResponder"/>
