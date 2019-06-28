@@ -12,6 +12,11 @@ import CoreData
 
 let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
 
+enum APIError:Error {
+    case ligandNameDoesntExist(String)
+}
+
+
 func getCount(_ entityName: String) -> Int {
     let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: entityName)
     do {
@@ -48,13 +53,29 @@ func fetchAllMolecules() -> [Molecules] {
         print("Error fetching molecules : ", error)
         return []
     }
-    
 }
 
-func createMolecule(ligand: String, view: UIViewController) -> Molecules? {
-    let molecule = Molecules(context: context)
-    molecule.ligand_Id = ligand
-    
+func fetchMolecule(moleculeName: String) -> Molecules? {
+    let request: NSFetchRequest<Molecules> = Molecules.fetchRequest()
+    request.predicate = NSPredicate(format: "ligand_Id = %@", moleculeName)
+    do {
+        
+        let molecule = try context.fetch(request)
+        if (molecule.count == 0) {
+            throw APIError.ligandNameDoesntExist("Ligand's name doesn't exist")
+        }
+        return molecule.first
+    }
+    catch let error {
+        print(error)
+        return nil
+    }
+}
+
+func updateMolecule(molecule: Molecules, view: UIViewController) -> Molecules? {
+    guard let ligand = molecule.ligand_Id else {
+        print("unable to retrieve ligand ID"); return nil
+    }
     guard let moleculePdb = parseHtml(ligand: ligand) else { alert(view: view, message: "Impossible de recupérer la molécule"); return nil}
     let pdbLines = moleculePdb.components(separatedBy: "\n").filter({$0 != ""})
     
@@ -67,13 +88,9 @@ func createMolecule(ligand: String, view: UIViewController) -> Molecules? {
         else if (lineTmp[0] == "CONECT"){
             createLink(newLink: lineTmp, molecule: molecule)
         }
-        else{
-            print("End of file\n")
-        }
     }
     do {
         try context.save()
-        print("bien sauvegardé")
         return molecule
     } catch let error{
         print(error)
@@ -86,7 +103,6 @@ func parseHtml(ligand: String) -> String? {
     let url = URL(string: "https://files.rcsb.org/ligands/view/" + ligand + "_ideal.pdb")
     do{
         let richText = try String(contentsOf: url!)
-        //            print(richText)
         return richText
     }catch let error{
         print(error)
