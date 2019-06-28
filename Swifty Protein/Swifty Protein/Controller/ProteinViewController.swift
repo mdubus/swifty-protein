@@ -39,6 +39,7 @@ class ProteinViewController: UIViewController {
     func setupScene() {
         scnScene = SCNScene()
         scnView.scene = scnScene
+        scnView.backgroundColor = UIColor.white
         scnView.showsStatistics = true
         scnView.allowsCameraControl = true
         scnView.autoenablesDefaultLighting = true
@@ -104,11 +105,48 @@ class ProteinViewController: UIViewController {
         var geometry: SCNGeometry
         
         geometry = SCNSphere(radius: 0.4)
-        let geometryNode1 = SCNNode(geometry: geometry)
-        geometryNode1.position = SCNVector3(x: atom.coor_X, y: atom.coor_Y, z: atom.coor_Z)
-        scnScene.rootNode.addChildNode(geometryNode1)
+        geometry.firstMaterial?.diffuse.contents = getColor(atomType: atom.type!)
+        let geometryNode = SCNNode(geometry: geometry)
+        geometryNode.position = SCNVector3(x: atom.coor_X, y: atom.coor_Y, z: atom.coor_Z)
+        scnScene.rootNode.addChildNode(geometryNode)
     }
     
+    func getColor(atomType: String) -> UIColor{
+        switch atomType{
+        case "H":
+            return UIColor.white
+        case "C":
+            return UIColor.black
+        case "N":
+            return UIColor(red:0.13, green:0.00, blue:1.00, alpha:1.0)
+        case "O":
+            return UIColor.red
+        case "F", "Cl":
+            return UIColor.green
+        case "Br":
+            return UIColor(red:0.59, green:0.10, blue:0.01, alpha:1.0)
+        case "I":
+            return UIColor(red:0.39, green:0.00, blue:0.73, alpha:1.0)
+        case "He", "Ne", "Ar", "Xe", "Kr":
+            return UIColor(red:0.17, green:1.00, blue:1.00, alpha:1.0)
+        case "P":
+            return UIColor.orange
+        case "S":
+            return UIColor.yellow
+        case "B":
+            return UIColor(red:0.99, green:0.66, blue:0.51, alpha:1.0)
+        case "Li", "Na", "K", "Rb", "Cs", "Fr":
+            return UIColor(red:0.46, green:0.00, blue:1.00, alpha:1.0)
+        case "Be", "Mg", "Ca", "Sr", "Ba", "Ra":
+            return UIColor(red:0.06, green:0.48, blue:0.00, alpha:1.0)
+        case "Ti":
+            return UIColor.gray
+        case "Fe":
+            return UIColor(red:0.86, green:0.46, blue:0.02, alpha:1.0)
+        default:
+            return UIColor(red:0.86, green:0.42, blue:1.00, alpha:1.0)
+        }
+    }
 
 }
 

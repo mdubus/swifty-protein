@@ -17,3 +17,4 @@ class Molecules: NSManagedObject {
 
 class Links: NSManagedObject{
 }
+	
