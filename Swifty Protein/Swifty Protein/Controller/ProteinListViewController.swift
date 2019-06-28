@@ -18,11 +18,12 @@ class ProteinListViewController:UIViewController {
     var ligands = [String]()
     var searchedLigands = [String]()
     var selectedMolecule: String = ""
+    var moleculeToPass: Molecules = Molecules()
     
     
     override func viewDidLoad() {
         super.viewDidLoad()
-//        deleteAllEntities("Molecules")
+        deleteAllEntities("Molecules")
         let count = getCount("Molecules")
         print(count)
         if (count == 0) {
@@ -79,17 +80,36 @@ extension ProteinListViewController: UITableViewDelegate, UITableViewDataSource 
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         selectedMolecule = searchedLigands.count > 0 ? searchedLigands[indexPath.row] : ligands[indexPath.row]
+        
+        guard let fetchedMolecule = fetchMolecule(moleculeName: selectedMolecule) else {
+            alert(view:self, message: "Error trying to fetch molecule \(selectedMolecule)");
+            return
+        }
+        
+        let moleculeAtoms = fetchedMolecule.atom?.allObjects as! [Atoms]
+        if (moleculeAtoms.count > 0) {
+            print("getting existing molecule")
+            moleculeToPass = fetchedMolecule
+        }
+        else {
+            print("creating new molecule")
+            guard let molecule:Molecules = updateMolecule(molecule: fetchedMolecule, view: self) else {
+                alert(view: self, message: "unable to update molecule in core data") ;
+                return
+            }
+            moleculeToPass = molecule
+        }
+        let count = getCount("Molecules")
+        print("\(count) molecules in Core Data")
+        
         self.performSegue(withIdentifier: "tapedCellSegue", sender: self)
     }
+    
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if (segue.identifier == "tapedCellSegue") {
             let viewController = segue.destination as! ProteinViewController
-            guard let molecule:Molecules = createMolecule(ligand: selectedMolecule, view: self) else {
-                alert(view: self, message: "unable to create molecule in core data") ;
-                return
-            }
-            viewController.molecule = molecule
+            viewController.molecule = moleculeToPass
         }
     }
 }
