@@ -35,7 +35,7 @@ func deleteAllEntities(_ entity:String) {
     do {
         let results = try context.fetch(fetchRequest)
         for object in results {
-            guard let objectData = object as? NSManagedObject else {continue}
+            guard let objectData = object as? NSManagedObject else { continue }
             context.delete(objectData)
         }
     } catch let error {
@@ -76,7 +76,7 @@ func updateMolecule(molecule: Molecules, view: UIViewController) -> Molecules? {
     guard let ligand = molecule.ligand_Id else {
         print("unable to retrieve ligand ID"); return nil
     }
-    guard let moleculePdb = parseHtml(ligand: ligand) else { alert(view: view, message: "Impossible de recupérer la molécule"); return nil}
+    guard let moleculePdb = parseHtml(ligand: ligand) else { alert(view: view, message: "Unable to parse molecule's data"); return nil}
     let pdbLines = moleculePdb.components(separatedBy: "\n").filter({$0 != ""})
     
     for line in pdbLines{

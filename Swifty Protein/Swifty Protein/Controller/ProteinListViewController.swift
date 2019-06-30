@@ -21,19 +21,43 @@ class ProteinListViewController:UIViewController {
     var moleculeToPass: Molecules = Molecules()
     
     
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        deleteAllEntities("Molecules")
-        let count = getCount("Molecules")
-        print(count)
-        if (count == 0) {
-            loadProteinsIntoCoreData()
-        } else {
-            let molecules = fetchAllMolecules()
-            for molecule in molecules {
-                ligands.append(molecule.ligand_Id!)
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        if (ligands.count == 0) {
+
+            self.tableView.separatorStyle = .none
+            self.searchBar.isHidden = true
+            
+            let spinnerView = SpinnerView.init(frame: view.frame)
+            spinnerView.startSpinning()
+            view.addSubview(spinnerView)
+            
+            DispatchQueue.main.async {
+                OperationQueue.main.addOperation() {
+                    deleteAllEntities("Molecules")
+                    let count = getCount("Molecules")
+                    if (count == 0) {
+                        self.loadProteinsIntoCoreData()
+                    } else {
+                        let molecules = fetchAllMolecules()
+                        for molecule in molecules {
+                            self.ligands.append(molecule.ligand_Id!)
+                        }
+                    }
+    
+                    self.tableView.separatorStyle = .singleLine
+                    self.searchBar.isHidden = false
+                    self.tableView.reloadData()
+                    spinnerView.stopSpinning()
+                    spinnerView.removeFromSuperview()
+                }
             }
         }
+    }
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
     }
     
     func loadProteinsIntoCoreData() {
@@ -79,6 +103,10 @@ extension ProteinListViewController: UITableViewDelegate, UITableViewDataSource 
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        
+        // Buggy. Loads only after the next view has been loaded
+        UIApplication.shared.isNetworkActivityIndicatorVisible = true
+        
         selectedMolecule = searchedLigands.count > 0 ? searchedLigands[indexPath.row] : ligands[indexPath.row]
         
         guard let fetchedMolecule = fetchMolecule(moleculeName: selectedMolecule) else {
@@ -101,6 +129,8 @@ extension ProteinListViewController: UITableViewDelegate, UITableViewDataSource 
         }
         let count = getCount("Molecules")
         print("\(count) molecules in Core Data")
+        
+        UIApplication.shared.isNetworkActivityIndicatorVisible = false
         
         self.performSegue(withIdentifier: "tapedCellSegue", sender: self)
     }
