@@ -4,7 +4,10 @@ import Accelerate
 import CoreData
 
 class ProteinViewController: UIViewController {
-    var scnView: SCNView!
+    
+    
+    @IBOutlet weak var scnView: SCNView!
+//    var scnView: SCNView!
     var scnScene: SCNScene!
     var cameraNode: SCNNode!
     let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
@@ -14,7 +17,7 @@ class ProteinViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        setupView()
+//        setupView()
         
         setupScene()
         setupCamera()
@@ -32,9 +35,9 @@ class ProteinViewController: UIViewController {
         return true
     }
     
-    func setupView() {
-        scnView = (self.view as! SCNView)
-    }
+//    func setupView() {
+//        scnView = self.scnView
+//    }
     
     func setupScene() {
         scnScene = SCNScene()
@@ -50,6 +53,16 @@ class ProteinViewController: UIViewController {
         cameraNode.camera = SCNCamera()
         cameraNode.position = SCNVector3(x: 0, y: 0, z: 50)
         scnScene.rootNode.addChildNode(cameraNode)
+    }
+    
+    func setupText(){
+        let newText = SCNText(string: "Je suis du texte", extrusionDepth: 0)
+        newText.font = UIFont(name: "Arial", size: 3)
+        newText.firstMaterial!.diffuse.contents = UIColor.black
+        newText.firstMaterial!.specular.contents = UIColor.black
+        
+        let textNode = SCNNode(geometry: newText)
+        scnScene.rootNode.addChildNode(textNode)
     }
     
     func parseMolecule(){
@@ -147,7 +160,6 @@ class ProteinViewController: UIViewController {
             return UIColor(red:0.86, green:0.42, blue:1.00, alpha:1.0)
         }
     }
-
 }
 
 
