@@ -15,9 +15,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     var window: UIWindow?
     
-    
-    func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
-        
+    func setupMainView() {
         var rootController = UIViewController()
         let context = LAContext()
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
@@ -26,13 +24,17 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             rootController = storyboard.instantiateViewController(withIdentifier: "TouchIDViewController") as UIViewController
         }
         else {
-           rootController = storyboard.instantiateViewController(withIdentifier: "LoginViewController") as UIViewController
+            rootController = storyboard.instantiateViewController(withIdentifier: "LoginViewController") as UIViewController
         }
-    
+        
         if let window = self.window {
             window.rootViewController = rootController
         }
-        
+    }
+    
+    
+    func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
+        setupMainView()
         return true
     }
     
@@ -48,6 +50,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     func applicationWillEnterForeground(_ application: UIApplication) {
         // Called as part of the transition from the background to the active state; here you can undo many of the changes made on entering the background.
+       setupMainView()
     }
     
     func applicationDidBecomeActive(_ application: UIApplication) {
