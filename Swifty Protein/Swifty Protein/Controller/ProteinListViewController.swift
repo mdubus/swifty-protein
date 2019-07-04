@@ -146,7 +146,7 @@ extension ProteinListViewController: UITableViewDelegate, UITableViewDataSource 
 
 extension ProteinListViewController:UISearchBarDelegate {
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
-        searchedLigands = ligands.filter({$0.contains(searchText)})
+        searchedLigands = ligands.filter({$0.lowercased().contains(searchText.lowercased())})
         tableView.reloadData()
     }
     func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
