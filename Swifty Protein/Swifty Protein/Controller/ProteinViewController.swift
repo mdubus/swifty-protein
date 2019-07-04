@@ -4,27 +4,37 @@ import Accelerate
 import CoreData
 
 class ProteinViewController: UIViewController {
-    
-    
+
+
     @IBOutlet weak var scnView: SCNView!
+
+    @IBOutlet weak var nameLabel: UILabel!
+    @IBOutlet weak var symbolLabel: UILabel!
+    @IBOutlet weak var numLabel: UILabel!
+    @IBOutlet weak var massLabel: UILabel!
+
     var scnScene: SCNScene!
     var cameraNode: SCNNode!
     let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
     var molecule: Molecules = Molecules()
     @IBOutlet weak var navigationItemBar: UINavigationItem!
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+
         setupScene()
         setupCamera()
         parseMolecule()
+
+        let tap = UITapGestureRecognizer(target: self, action: #selector(self.handleTap(_:)))
+        scnView.addGestureRecognizer(tap)
+
     }
-    
+
     override var shouldAutorotate: Bool {
         return true
     }
-    
+
     override var prefersStatusBarHidden: Bool {
         return true
     }
@@ -37,36 +47,41 @@ class ProteinViewController: UIViewController {
         scnView.allowsCameraControl = true
         scnView.autoenablesDefaultLighting = true
     }
-    
+
     func setupCamera() {
         cameraNode = SCNNode()
         cameraNode.camera = SCNCamera()
-        cameraNode.position = SCNVector3(x: 0, y: 0, z: 50)
+        cameraNode.position = SCNVector3(x: 0, y: 0, z: 30)
         scnScene.rootNode.addChildNode(cameraNode)
     }
-    
-    func setupText(){
-        let newText = SCNText(string: "Je suis du texte", extrusionDepth: 0)
-        newText.font = UIFont(name: "Arial", size: 3)
-        newText.firstMaterial!.diffuse.contents = UIColor.black
-        newText.firstMaterial!.specular.contents = UIColor.black
-        
-        let textNode = SCNNode(geometry: newText)
-        scnScene.rootNode.addChildNode(textNode)
+
+    @objc func handleTap(_ sender: UITapGestureRecognizer? = nil) {
+        let location: CGPoint = (sender?.location(in: scnView))!
+        let hits = self.scnView.hitTest(location, options: nil)
+        if let tappedNode = hits.first?.node {
+            // do something with the tapped node ...
+            setInfos(atomType: tappedNode.name!)
+
+        }
     }
-    
+
+
+    @IBAction func autoRotate(_ sender: UIButton) {
+
+    }
+
     func parseMolecule(){
-        
+
         for atom in (molecule.atom?.allObjects) as! [Atoms]{
             drawOneSphere(atom: atom)
         }
-        
+
         for link in (molecule.links?.allObjects) as! [Links]{
             drawOneLink(link: link)
         }
     }
-    
-    
+
+
     func searchAtom(id: Int16, atoms: [Atoms]) -> Atoms{
         for atom in atoms{
             if (atom.atom_Id == id){
@@ -75,45 +90,207 @@ class ProteinViewController: UIViewController {
         }
         return atoms[1]
     }
-    
+
     func drawOneLink(link: Links){
         let atom1 = searchAtom(id: link.atome1_ID, atoms: (molecule.atom?.allObjects) as! [Atoms])
         let atom2 = searchAtom(id: link.atome2_ID, atoms: (molecule.atom?.allObjects) as! [Atoms])
-        
+
         let pos1 = simd_float3(x: atom1.coor_X, y: atom1.coor_Y, z: atom1.coor_Z)
         let pos2 = simd_float3(x: atom2.coor_X, y: atom2.coor_Y, z: atom2.coor_Z)
         let yAxis = simd_float3(x:0, y:1, z:0)
         let diff = pos2 - pos1
         let norm = simd_normalize(diff)
         let dot = simd_dot(yAxis, norm)
-        
+
         var geometry: SCNGeometry
         geometry = SCNCylinder(radius: 0.15, height: 1)
         let geometryNode = SCNNode(geometry: geometry)
-        
+        geometryNode.name = "Stick"
+
         if (abs(dot) < 0.999999)
         {
             let cross = simd_cross(yAxis, diff)
             let quaternion = simd_quatf(vector: simd_float4(x: cross.x, y: cross.y, z: cross.z, w: 1 + dot))
             geometryNode.simdOrientation = simd_normalize(quaternion)
         }
-    
+
         geometryNode.simdPosition = diff / 2 + pos1
         geometryNode.simdScale = simd_float3(x: 1, y: simd_length(diff), z: 1)
         scnScene.rootNode.addChildNode(geometryNode)
     }
-    
+
     func drawOneSphere(atom: Atoms){
-        
+
         var geometry: SCNGeometry
-        
+
         geometry = SCNSphere(radius: 0.4)
         geometry.firstMaterial?.diffuse.contents = getColor(atomType: atom.type!)
         let geometryNode = SCNNode(geometry: geometry)
+        geometryNode.name = atom.type!
         geometryNode.position = SCNVector3(x: atom.coor_X, y: atom.coor_Y, z: atom.coor_Z)
         scnScene.rootNode.addChildNode(geometryNode)
     }
-    
+
+    func setInfos(atomType: String){
+        switch atomType{
+        case "H":
+            nameLabel.text = "Hydrogène"
+            symbolLabel.text = "H"
+            numLabel.text = "1"
+            massLabel.text = "1"
+        case "C":
+            nameLabel.text = "Carbone"
+                symbolLabel.text = "C"
+                numLabel.text = "6"
+                massLabel.text = "12.01"
+        case "N":
+            nameLabel.text = "Azote"
+                symbolLabel.text = "N"
+                numLabel.text = "7"
+                massLabel.text = "14"
+        case "O":
+            nameLabel.text = "Oxygène"
+                symbolLabel.text = "O"
+                numLabel.text = "8"
+                massLabel.text = "15.99"
+        case "F":
+            nameLabel.text = "Fluor"
+                symbolLabel.text = "F"
+                numLabel.text = "9"
+                massLabel.text = "18.99"
+        case "Cl":
+            nameLabel.text = "Chlore"
+            symbolLabel.text = "Cl"
+            numLabel.text = "17"
+            massLabel.text = "35.45"
+        case "Br":
+            nameLabel.text = "Brome"
+                symbolLabel.text = "Br"
+                numLabel.text = "35"
+                massLabel.text = "79.90"
+        case "I":
+            nameLabel.text = "Iode"
+                symbolLabel.text = "I"
+                numLabel.text = "53"
+                massLabel.text = "126.90"
+        case "He":
+            nameLabel.text = "Hélium"
+                symbolLabel.text = "He"
+                numLabel.text = "2"
+                massLabel.text = "4.00"
+        case "Ne":
+            nameLabel.text = "Néon"
+                symbolLabel.text = "Ne"
+                numLabel.text = "10"
+                massLabel.text = "20.18"
+        case "Ar":
+            nameLabel.text = "Argon"
+                symbolLabel.text = "Ar"
+                numLabel.text = "18"
+                massLabel.text = "39.95"
+        case "Xe":
+            nameLabel.text = "Xénon"
+                symbolLabel.text = "Xe"
+                numLabel.text = "54"
+                massLabel.text = "131.29"
+        case "Kr":
+            nameLabel.text = "Krypton"
+                symbolLabel.text = "Kr"
+                numLabel.text = "36"
+                massLabel.text = "83.79"
+        case "P":
+            nameLabel.text = "Phosphore"
+                symbolLabel.text = "P"
+                numLabel.text = "15"
+                massLabel.text = "30.97"
+        case "S":
+            nameLabel.text = "Soufre"
+                symbolLabel.text = "S"
+                numLabel.text = "16"
+                massLabel.text = "32.06"
+        case "B":
+            nameLabel.text = "Bore"
+                symbolLabel.text = "B"
+                numLabel.text = "5"
+                massLabel.text = "10.81"
+        case "Li":
+            nameLabel.text = "Lithium"
+                symbolLabel.text = "Li"
+            numLabel.text = "3"
+                massLabel.text = "6.93"
+        case "Na":
+            nameLabel.text = "Sodium"
+                symbolLabel.text = "Na"
+                numLabel.text = "11"
+                massLabel.text = "22.99"
+        case "K":
+            nameLabel.text = "Potassium"
+                symbolLabel.text = "K"
+                numLabel.text = "19"
+                massLabel.text = "39.10"
+        case "Rb":
+            nameLabel.text = "Rubidium"
+                symbolLabel.text = "Rb"
+                numLabel.text = "37"
+                massLabel.text = "85.47"
+        case "Cs":
+            nameLabel.text = "Césium"
+                symbolLabel.text = "Cs"
+                numLabel.text = "55"
+                massLabel.text = "132.91"
+        case "Fr":
+            nameLabel.text = "Francium"
+                symbolLabel.text = "Fr"
+                numLabel.text = "87"
+                massLabel.text = "223"
+        case "Be":
+            nameLabel.text = "Béryllium"
+                symbolLabel.text = "Be"
+                numLabel.text = "4"
+                massLabel.text = "9.01"
+        case "Mg":
+            nameLabel.text = "Magnésium"
+                symbolLabel.text = "Mg"
+                numLabel.text = "12"
+                massLabel.text = "24.30"
+        case "Ca":
+            nameLabel.text = "Calcium"
+                symbolLabel.text = "Ca"
+                numLabel.text = "20"
+                massLabel.text = "40.08"
+        case "Sr":
+            nameLabel.text = "Strontium"
+                symbolLabel.text = "Sr"
+                numLabel.text = "38"
+                massLabel.text = "87.62"
+        case "Ba":
+            nameLabel.text = "Baryum"
+                symbolLabel.text = "Ba"
+                numLabel.text = "56"
+                massLabel.text = "137.32"
+        case "Ra":
+            nameLabel.text = "Radium"
+                symbolLabel.text = "Ra"
+                numLabel.text = "88"
+                massLabel.text = "226"
+        case "Ti":
+            nameLabel.text = "Titane"
+                symbolLabel.text = "Ti"
+                numLabel.text = "22"
+                massLabel.text = "47.87"
+        case "Fe":
+            nameLabel.text = "Fer"
+                symbolLabel.text = "Fe"
+                numLabel.text = "26"
+                massLabel.text = "55.85"
+        default:
+            nameLabel.text = nameLabel.text
+                symbolLabel.text = symbolLabel.text
+                numLabel.text = numLabel.text
+                massLabel.text = massLabel.text
+        }
+    }
+
     func getColor(atomType: String) -> UIColor{
         switch atomType{
         case "H":
@@ -150,8 +327,8 @@ class ProteinViewController: UIViewController {
             return UIColor(red:0.86, green:0.42, blue:1.00, alpha:1.0)
         }
     }
-    
-    
+
+
     @IBAction func share(_ sender: UIButton) {
         var wholeImage : UIImage?
         DispatchQueue.main.async {
@@ -166,8 +343,8 @@ class ProteinViewController: UIViewController {
             }
         }
     }
-    
-    
+
+
 }
 
 
