@@ -93,12 +93,12 @@ class ProteinListViewController:UIViewController {
 extension ProteinListViewController: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return searchedLigands.count > 0 ? searchedLigands.count : ligands.count
+        return searchBar.text?.isEmpty == false ? searchedLigands.count : ligands.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "cell") as! ProteinTableViewCell
-        cell.ligand = searchedLigands.count > 0 ? searchedLigands[indexPath.row] : ligands[indexPath.row]
+        cell.ligand = searchBar.text?.isEmpty == false ? searchedLigands[indexPath.row] : ligands[indexPath.row]
         return cell
     }
     
@@ -107,7 +107,7 @@ extension ProteinListViewController: UITableViewDelegate, UITableViewDataSource 
         // Buggy. Loads only after the next view has been loaded
         UIApplication.shared.isNetworkActivityIndicatorVisible = true
         
-        selectedMolecule = searchedLigands.count > 0 ? searchedLigands[indexPath.row] : ligands[indexPath.row]
+        selectedMolecule = searchBar.text?.isEmpty == false ? searchedLigands[indexPath.row] : ligands[indexPath.row]
         
         guard let fetchedMolecule = fetchMolecule(moleculeName: selectedMolecule) else {
             alert(view:self, message: "Error trying to fetch molecule \(selectedMolecule)");
@@ -150,9 +150,9 @@ extension ProteinListViewController:UISearchBarDelegate {
         searchedLigands = ligands.filter({$0.lowercased().contains(searchText.lowercased())})
         tableView.reloadData()
     }
-    func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
-        searchBar.text = ""
-        searchedLigands = []
-        tableView.reloadData()
-    }
+//    func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
+//        searchBar.text = ""
+//        searchedLigands = []
+//        tableView.reloadData()
+//    }
 }
