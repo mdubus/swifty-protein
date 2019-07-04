@@ -25,7 +25,7 @@ class ProteinListViewController:UIViewController {
         super.viewWillAppear(animated)
         
         if (ligands.count == 0) {
-
+            
             self.tableView.separatorStyle = .none
             self.searchBar.isHidden = true
             
@@ -45,7 +45,7 @@ class ProteinListViewController:UIViewController {
                             self.ligands.append(molecule.ligand_Id!)
                         }
                     }
-    
+                    
                     self.tableView.separatorStyle = .singleLine
                     self.searchBar.isHidden = false
                     self.tableView.reloadData()
@@ -131,7 +131,6 @@ extension ProteinListViewController: UITableViewDelegate, UITableViewDataSource 
         print("\(count) molecules in Core Data")
         
         UIApplication.shared.isNetworkActivityIndicatorVisible = false
-        
         self.performSegue(withIdentifier: "tapedCellSegue", sender: self)
     }
     

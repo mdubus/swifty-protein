@@ -8,6 +8,7 @@
 
 import UIKit
 import CoreData
+import LocalAuthentication
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -16,7 +17,22 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
-        // Override point for customization after application launch.
+        
+        var rootController = UIViewController()
+        let context = LAContext()
+        let storyboard = UIStoryboard(name: "Main", bundle: nil)
+        
+        if context.canEvaluatePolicy(.deviceOwnerAuthenticationWithBiometrics, error: nil) {
+            rootController = storyboard.instantiateViewController(withIdentifier: "TouchIDViewController") as UIViewController
+        }
+        else {
+           rootController = storyboard.instantiateViewController(withIdentifier: "LoginViewController") as UIViewController
+        }
+    
+        if let window = self.window {
+            window.rootViewController = rootController
+        }
+        
         return true
     }
     
