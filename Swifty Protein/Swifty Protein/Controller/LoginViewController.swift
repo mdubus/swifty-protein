@@ -16,10 +16,12 @@ class LoginViewController: UIViewController  {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        loginButton.isEnabled = true
     }
     
     @IBAction func submit(_ sender: Any) {
         if (_login.text?.isEmpty == false && _password.text?.isEmpty == false) {
+            loginButton.isEnabled = false
             performSegue(withIdentifier: "toProteinsList", sender: self)
         }
         else {

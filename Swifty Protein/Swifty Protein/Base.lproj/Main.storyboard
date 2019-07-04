@@ -19,7 +19,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <searchBar contentMode="redraw" text="" placeholder="Search a ligand" showsCancelButton="YES" translatesAutoresizingMaskIntoConstraints="NO" id="U0r-qo-3qc">
+                            <searchBar contentMode="redraw" text="" placeholder="Search a ligand" translatesAutoresizingMaskIntoConstraints="NO" id="U0r-qo-3qc">
                                 <rect key="frame" x="0.0" y="64" width="375" height="56"/>
                                 <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <color key="barTintColor" red="1" green="0.1857388616" blue="0.57339501380000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -81,14 +81,6 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="0fN-a1-4kK" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="-392.80000000000001" y="120.98950524737631"/>
-        </scene>
-        <!--Protein View Controller-->
-        <scene sceneID="tXr-a1-R10">
-            <objects>
-                <viewController id="BV1-FR-VrT" customClass="ProteinViewController" customModule="Swifty_Protein" customModuleProvider="target" sceneMemberID="viewController"/>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="SZV-WD-TEh" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="1290" y="121"/>
         </scene>
         <!--Title-->
         <scene sceneID="2nI-PO-5dh">
