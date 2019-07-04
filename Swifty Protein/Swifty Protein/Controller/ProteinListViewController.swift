@@ -139,6 +139,7 @@ extension ProteinListViewController: UITableViewDelegate, UITableViewDataSource 
         if (segue.identifier == "tapedCellSegue") {
             let viewController = segue.destination as! ProteinViewController
             viewController.molecule = moleculeToPass
+            viewController.navigationItemBar.title = moleculeToPass.ligand_Id
         }
     }
 }

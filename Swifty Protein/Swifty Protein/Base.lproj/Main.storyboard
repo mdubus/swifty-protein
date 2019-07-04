@@ -90,7 +90,7 @@
             </objects>
             <point key="canvasLocation" x="1290" y="121"/>
         </scene>
-        <!--Protein View Controller-->
+        <!--Title-->
         <scene sceneID="2nI-PO-5dh">
             <objects>
                 <viewController id="LTI-QF-DNL" customClass="ProteinViewController" customModule="Swifty_Protein" customModuleProvider="target" sceneMemberID="viewController">
@@ -182,11 +182,6 @@
                                     </stackView>
                                 </subviews>
                             </stackView>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="J2h-0S-5jn">
-                                <rect key="frame" x="286" y="26" width="73" height="30"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <state key="normal" title="Button"/>
-                            </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
@@ -199,7 +194,20 @@
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="58e-GZ-YED"/>
                     </view>
+                    <navigationItem key="navigationItem" title="Title" id="Kbn-Wp-cGk">
+                        <barButtonItem key="rightBarButtonItem" style="plain" id="7E3-tr-4ey">
+                            <button key="customView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="right" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="8gI-LW-Thn">
+                                <rect key="frame" x="276" y="7" width="83" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" title="Share"/>
+                                <connections>
+                                    <action selector="share:" destination="LTI-QF-DNL" eventType="touchUpInside" id="mr4-4V-aEY"/>
+                                </connections>
+                            </button>
+                        </barButtonItem>
+                    </navigationItem>
                     <connections>
+                        <outlet property="navigationItemBar" destination="Kbn-Wp-cGk" id="tD0-Bl-EK3"/>
                         <outlet property="scnView" destination="LtO-lU-z9b" id="e2e-I2-04I"/>
                     </connections>
                 </viewController>
