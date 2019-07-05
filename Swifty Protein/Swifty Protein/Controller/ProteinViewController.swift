@@ -57,7 +57,9 @@ class ProteinViewController: UIViewController {
     }
 
     @IBAction func segmentChange(_ sender: UISegmentedControl) {
-        self.scnView.reloadInputViews()
+        self.scnView.scene?.rootNode.enumerateChildNodes { (node, stop) in
+            node.removeFromParentNode()
+        }
         parseMolecule()
     }
     @objc func handleTap(_ sender: UITapGestureRecognizer? = nil) {
@@ -68,11 +70,6 @@ class ProteinViewController: UIViewController {
             setInfos(atomType: tappedNode.name!)
 
         }
-    }
-
-
-    @IBAction func autoRotate(_ sender: UIButton) {
-
     }
 
     func parseMolecule(){
