@@ -18,7 +18,8 @@ class ProteinViewController: UIViewController {
     let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
     var molecule: Molecules = Molecules()
     @IBOutlet weak var navigationItemBar: UINavigationItem!
-
+    @IBOutlet weak var segmentControl: UISegmentedControl!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -55,6 +56,10 @@ class ProteinViewController: UIViewController {
         scnScene.rootNode.addChildNode(cameraNode)
     }
 
+    @IBAction func segmentChange(_ sender: UISegmentedControl) {
+        self.scnView.reloadInputViews()
+        parseMolecule()
+    }
     @objc func handleTap(_ sender: UITapGestureRecognizer? = nil) {
         let location: CGPoint = (sender?.location(in: scnView))!
         let hits = self.scnView.hitTest(location, options: nil)
@@ -124,7 +129,13 @@ class ProteinViewController: UIViewController {
         var geometry: SCNGeometry
 
         geometry = SCNSphere(radius: 0.4)
-        geometry.firstMaterial?.diffuse.contents = getColor(atomType: atom.type!)
+        print(segmentControl.selectedSegmentIndex)
+        if (segmentControl.selectedSegmentIndex == 0){
+            geometry.firstMaterial?.diffuse.contents = getColor(atomType: atom.type!)
+        }
+        else{
+            geometry.firstMaterial?.diffuse.contents = getJmolColor(atomType: atom.type!)
+        }
         let geometryNode = SCNNode(geometry: geometry)
         geometryNode.name = atom.type!
         geometryNode.position = SCNVector3(x: atom.coor_X, y: atom.coor_Y, z: atom.coor_Z)
@@ -325,6 +336,73 @@ class ProteinViewController: UIViewController {
             return UIColor(red:0.86, green:0.46, blue:0.02, alpha:1.0)
         default:
             return UIColor(red:0.86, green:0.42, blue:1.00, alpha:1.0)
+        }
+    }
+    
+    func getJmolColor(atomType: String) -> UIColor{
+        switch atomType{
+        case "H":
+            return UIColor.white
+        case "C":
+            return UIColor(red:0.56, green:0.56, blue:0.56, alpha:1.0)
+        case "N":
+            return UIColor(red:0.18, green:0.25, blue:0.97, alpha:1.0)
+        case "O":
+            return UIColor(red:0.99, green:0.00, blue:0.07, alpha:1.0)
+        case "F":
+            return UIColor(red:0.58, green:0.89, blue:0.32, alpha:1.0)
+        case "Cl":
+            return UIColor(red:0.21, green:0.96, blue:0.13, alpha:1.0)
+        case "Br":
+            return UIColor(red:0.64, green:0.13, blue:0.16, alpha:1.0)
+        case "I":
+            return UIColor(red:0.57, green:0.00, blue:0.58, alpha:1.0)
+        case "He":
+            return UIColor(red:0.85, green:1.00, blue:1.00, alpha:1.0)
+        case "Ne":
+            return UIColor(red:0.71, green:0.89, blue:0.96, alpha:1.0)
+        case "Ar":
+            return UIColor(red:0.51, green:0.82, blue:0.89, alpha:1.0)
+        case "Xe":
+            return UIColor(red:0.27, green:0.62, blue:0.69, alpha:1.0)
+        case "Kr":
+            return UIColor(red:0.38, green:0.72, blue:0.82, alpha:1.0)
+        case "P":
+            return UIColor(red:0.99, green:0.49, blue:0.03, alpha:1.0)
+        case "S":
+            return UIColor(red:1.00, green:1.00, blue:0.20, alpha:1.0)
+        case "B":
+            return UIColor(red:0.99, green:0.70, blue:0.71, alpha:1.0)
+        case "Li":
+            return UIColor(red:0.79, green:0.46, blue:1.00, alpha:1.0)
+        case "Na":
+            return UIColor(red:0.66, green:0.30, blue:0.95, alpha:1.0)
+        case "K":
+            return UIColor(red:0.55, green:0.18, blue:0.83, alpha:1.0)
+        case "Rb":
+            return UIColor(red:0.44, green:0.11, blue:0.69, alpha:1.0)
+        case "Cs":
+            return UIColor(red:0.34, green:0.00, blue:0.56, alpha:1.0)
+        case "Fr":
+            return UIColor(red:0.25, green:0.00, blue:0.40, alpha:1.0)
+        case "Be":
+            return UIColor(red:0.77, green:1.00, blue:0.03, alpha:1.0)
+        case "Mg":
+            return UIColor(red:0.56, green:1.00, blue:0.03, alpha:1.0)
+        case "Ca":
+            return UIColor(red:0.30, green:1.00, blue:0.02, alpha:1.0)
+        case "Sr":
+            return UIColor(red:0.18, green:1.00, blue:0.02, alpha:1.0)
+        case "Ba":
+            return UIColor(red:0.13, green:0.81, blue:0.01, alpha:1.0)
+        case "Ra":
+            return UIColor(red:0.07, green:0.50, blue:0.00, alpha:1.0)
+        case "Ti":
+            return UIColor(red:0.75, green:0.76, blue:0.78, alpha:1.0)
+        case "Fe":
+            return UIColor(red:0.87, green:0.39, blue:0.20, alpha:1.0)
+        default:
+            return UIColor(red:0.99, green:0.00, blue:0.58, alpha:1.0)
         }
     }
 
