@@ -11,16 +11,21 @@ import UIKit
 import LocalAuthentication
 
 class TouchIDViewController: UIViewController {
+    
+    @IBOutlet weak var goButton: UIButton!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         deleteAllEntities("Molecules")
         deleteAllEntities("Atoms")
+        goButton.isEnabled = true
     }
     
     @IBAction func loginWithTouchID(_ sender: Any) {
         let context = LAContext()
         var error: NSError?
         
+        goButton.isEnabled = false
         if context.canEvaluatePolicy(.deviceOwnerAuthenticationWithBiometrics, error: &error) {
             context.evaluatePolicy(.deviceOwnerAuthenticationWithBiometrics, localizedReason: "Login to Swifty Protein", reply: { (success, error) in
                 if success {
@@ -29,11 +34,15 @@ class TouchIDViewController: UIViewController {
                     }
                 }
                 else {
+                    DispatchQueue.main.async {
+                        self.goButton.isEnabled = true
+                    }
                     alert(view: self, message: "Authentication failed")
                 }
             })
         }
         else {
+            goButton.isEnabled = true
             alert(view: self, message: "Touch ID is not available on your device")
         }
     }

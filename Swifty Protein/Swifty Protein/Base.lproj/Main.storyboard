@@ -208,9 +208,9 @@
                         </barButtonItem>
                     </navigationItem>
                     <connections>
-                        <outlet property="navigationItemBar" destination="Kbn-Wp-cGk" id="tD0-Bl-EK3"/>
                         <outlet property="massLabel" destination="eRD-jM-agx" id="e7d-Hh-fu3"/>
                         <outlet property="nameLabel" destination="f1s-uc-on7" id="DiL-eo-SiU"/>
+                        <outlet property="navigationItemBar" destination="Kbn-Wp-cGk" id="tD0-Bl-EK3"/>
                         <outlet property="numLabel" destination="srO-Bd-QNk" id="KEh-zk-0Nf"/>
                         <outlet property="scnView" destination="LtO-lU-z9b" id="e2e-I2-04I"/>
                         <outlet property="symbolLabel" destination="BAO-wo-c0m" id="bbW-Ub-KcW"/>
@@ -299,6 +299,7 @@
                     </view>
                     <navigationItem key="navigationItem" id="DIr-Sa-jOx"/>
                     <connections>
+                        <outlet property="goButton" destination="aER-rl-R3L" id="7lV-1w-Z67"/>
                         <segue destination="zyN-Ya-wc3" kind="show" identifier="TouchIDToProteinsList" id="bab-4g-0oZ"/>
                     </connections>
                 </viewController>
