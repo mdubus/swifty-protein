@@ -111,7 +111,7 @@ class ProteinViewController: UIViewController {
 
         if (abs(dot) < 0.999999)
         {
-            let cross = simd_cross(yAxis, diff)
+            let cross = simd_cross(yAxis, norm)
             let quaternion = simd_quatf(vector: simd_float4(x: cross.x, y: cross.y, z: cross.z, w: 1 + dot))
             geometryNode.simdOrientation = simd_normalize(quaternion)
         }
@@ -126,7 +126,6 @@ class ProteinViewController: UIViewController {
         var geometry: SCNGeometry
 
         geometry = SCNSphere(radius: 0.4)
-        print(segmentControl.selectedSegmentIndex)
         if (segmentControl.selectedSegmentIndex == 0){
             geometry.firstMaterial?.diffuse.contents = getColor(atomType: atom.type!)
         }
