@@ -36,7 +36,7 @@ class ProteinListViewController:UIViewController {
             
             DispatchQueue.main.async {
                 OperationQueue.main.addOperation() {
-                    deleteAllEntities("Molecules")
+//                    deleteAllEntities("Molecules")
                     let count = getCount("Molecules")
                     if (count == 0) {
                         self.loadProteinsIntoCoreData()

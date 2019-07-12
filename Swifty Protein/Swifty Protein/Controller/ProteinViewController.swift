@@ -44,9 +44,9 @@ class ProteinViewController: UIViewController {
         scnScene = SCNScene()
         scnView.scene = scnScene
         scnView.backgroundColor = UIColor.white
-        scnView.showsStatistics = true
         scnView.allowsCameraControl = true
         scnView.autoenablesDefaultLighting = true
+        scnView.antialiasingMode = SCNAntialiasingMode.multisampling4X
     }
 
     func setupCamera() {
@@ -66,9 +66,7 @@ class ProteinViewController: UIViewController {
         let location: CGPoint = (sender?.location(in: scnView))!
         let hits = self.scnView.hitTest(location, options: nil)
         if let tappedNode = hits.first?.node {
-            // do something with the tapped node ...
             setInfos(atomType: tappedNode.name!)
-
         }
     }
 
